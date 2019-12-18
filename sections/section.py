@@ -8,7 +8,7 @@ import netCDF4
 import section_math
 import pandas
 
-class Section():
+class Section(object):
     def __init__(self, lat0, lon0, lat1, lon1, interval=10000.0):
         """Constructor setting edge points and interval for section."""
         self.lat0 = lat0
@@ -28,8 +28,8 @@ class Section():
     def write_gridfile(self, filename):
         """Function that writes a gridfile for cdo specfying a section,
         i.e. giving lat,lon coordinates along the section."""
-        lats = ",".join([str(l[0]) for l in self.coors])
-        lons = ",".join([str(l[1]) for l in self.coors])
+        lats = " ".join([str(l[0]) for l in self.coors])
+        lons = " ".join([str(l[1]) for l in self.coors])
 
         with open(filename, "w") as f:
             f.write("gridtype = curvilinear\n")
@@ -41,9 +41,9 @@ class Section():
             f.write(lons)
             f.write("\n\n")
             f.write("# Latitudes\n")
-            f.write(lat s)
+            f.write(lats)
             f.write("\n")
 
 if __name__ == "__main__":
-    s = Section(77,20,70,20)
-    s.write_gridfile("tmp.txt")
+    s = Section(77, 20, 70, 20)
+    s.write_gridfile("tmp.grd")
