@@ -3,14 +3,14 @@
 # coordinates to file specifying the entire lat,lon coordinates a long a line
 # between the edge points to be used by cdo
 
-import math
 import numpy as np
 import netCDF4
 import section
+import pandas
 
 def read_section(filename):
     """Function that reads section edge coordinatesfrom file."""
-    raise NotImplementedError
+    return pandas.read_csv(filename, index_col="coordinates")
 
 def write_gridfile(filename, coors):
     """Function that writes a gridfile for cdo specfying a section,
@@ -31,3 +31,14 @@ def write_gridfile(filename, coors):
         f.write("# Latitudes\n")
         f.write(lats)
         f.write("\n")
+
+if __name__ == "__main__":
+    filename = "cdo_gridfile.txt"
+    interval = 10000.0
+    lat0 = 77
+    lon0 = 20
+    lat1 = 70
+    lon1 = 20
+    azimuth = section.calculate_bearing(lat0,lon0,lat1,lon1)
+    coors = section.get_coordinates(interval,azimuth,lat0,lon0,lat1,lon1)
+    write_gridfile(filename, coors)
