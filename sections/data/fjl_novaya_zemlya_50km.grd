@@ -1,0 +1,12 @@
+# CDO gridfile for section: fjl_novaya_zemlya
+
+gridtype = curvilinear
+gridsize = 146
+xsize = 146
+ysize = 1
+
+# Longitudes
+xvals = 60.0 60.0 60.0 60.0 60.0 60.0 60.0 60.0 60.0 60.0 60.0 60.0
+
+# Latitudes
+yvals = 80.5 80.0508397523 79.6016795047 79.152519257 78.7033590093 78.2541987617 77.805038514 77.3558782663 76.9067180187 76.457557771 76.0083975233 76.0
