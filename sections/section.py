@@ -9,8 +9,9 @@ import section_math
 import pandas
 
 class Section(object):
-    def __init__(self, lat0, lon0, lat1, lon1, interval=10000.0):
+    def __init__(self, name, lat0, lon0, lat1, lon1, interval=10000.0):
         """Constructor setting edge points and interval for section."""
+        self.name = name
         self.lat0 = lat0
         self.lon0 = lon0
         self.lat1 = lat1
@@ -32,6 +33,7 @@ class Section(object):
         lons = " ".join([str(l[1]) for l in self.coors])
 
         with open(filename, "w") as f:
+            f.write("# CDO gridfile for section: {}\n\n".format(self.name))
             f.write("gridtype = curvilinear\n")
             f.write("gridsize = {}\n".format(len(lats)))
             f.write("xsize = {}\n".format(len(lats)))
@@ -45,5 +47,5 @@ class Section(object):
             f.write("\n")
 
 if __name__ == "__main__":
-    s = Section(77, 20, 70, 20)
+    s = Section("bso", 77, 20, 70, 20)
     s.write_gridfile("tmp.grd")
