@@ -64,15 +64,17 @@ def get_coordinates(interval,azimuth,lat1,lng1,lat2,lng2):
     return coords
 
 if __name__ == "__main__":
-    #point interval in meters
+    # point interval in meters
     interval = 50000.0
-    #direction of line in degrees
-    #start point
+
+    # start point
     lat1 = 77
     lng1 = 20
-    #end point
+
+    # end point
     lat2 = 70
     lng2 = 20
+
     azimuth = calculate_bearing(lat1,lng1,lat2,lng2)
     print azimuth
     coords = get_coordinates(interval,azimuth,lat1,lng1,lat2,lng2)
