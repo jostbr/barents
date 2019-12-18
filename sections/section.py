@@ -39,13 +39,13 @@ class Section(object):
             f.write("xsize = {}\n".format(len(lats)))
             f.write("ysize = 1\n")
             f.write("\n")
-            f.write("# Longitudes\n")
+            f.write("# Longitudes\nxvals = ")
             f.write(lons)
             f.write("\n\n")
-            f.write("# Latitudes\n")
+            f.write("# Latitudes\nyvals = ")
             f.write(lats)
             f.write("\n")
 
 if __name__ == "__main__":
-    s = Section("bso", 77, 20, 70, 20)
+    s = Section("bso", 77., 20., 70., 20.)
     s.write_gridfile("tmp.grd")
