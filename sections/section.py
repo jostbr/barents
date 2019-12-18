@@ -5,7 +5,7 @@
 
 import numpy as np
 import netCDF4
-import compute_section
+import section_math
 import pandas
 
 class Section():
@@ -20,8 +20,8 @@ class Section():
     def compute_section(self, interval):
         """Function that computes lat,lon coordinates between edge
         points with even spacing given by <interval>."""
-        azimuth = compute_section.calculate_bearing(self.lat0, self.lon0, self.lat1, self.lon1)
-        coors = compute_section.get_coordinates(interval, azimuth, self.lat0, self.lon0, self.lat1, self.lon1)
+        azimuth = section_math.calculate_bearing(self.lat0, self.lon0, self.lat1, self.lon1)
+        coors = section_math.get_coordinates(interval, azimuth, self.lat0, self.lon0, self.lat1, self.lon1)
         print(coors)
         return coors
 
