@@ -28,4 +28,4 @@ def get_latlon_from_topaz(filename):
 
 if __name__ == "__main__":
     lat_cdo, lon_cdo = get_latlon_from_cdo_gridfile("data/barents_sea_opening_50km.grd"))
-    lat_topaz, lon_topaz = get_latlon_from_topaz("/lustre/storeA/users/johannesro/BS_topaz/topaz_grid.nc"))
+    lat_topaz, lon_topaz = get_latlon_from_topaz("/lustre/storeA/users/johannesro/BS_topaz/topaz_grid.nc")
