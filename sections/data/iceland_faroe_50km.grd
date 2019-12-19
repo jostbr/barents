@@ -1,4 +1,4 @@
-# CDO gridfile for section: iceland_faroe
+# CDO gridfile for section: iceland_faroe (50.0km resolution)
 
 gridtype = curvilinear
 gridsize = 17

@@ -1,4 +1,4 @@
-# CDO gridfile for section: novaya_zemlya_russia
+# CDO gridfile for section: novaya_zemlya_russia (50.0km resolution)
 
 gridtype = curvilinear
 gridsize = 12

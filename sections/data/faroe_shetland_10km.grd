@@ -1,4 +1,4 @@
-# CDO gridfile for section: faroe_shetland
+# CDO gridfile for section: faroe_shetland (10.0km resolution)
 
 gridtype = curvilinear
 gridsize = 33

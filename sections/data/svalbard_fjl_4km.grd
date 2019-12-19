@@ -1,4 +1,4 @@
-# CDO gridfile for section: svalbard_fjl
+# CDO gridfile for section: svalbard_fjl (4.0km resolution)
 
 gridtype = curvilinear
 gridsize = 221

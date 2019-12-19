@@ -1,4 +1,4 @@
-# CDO gridfile for section: fram_strait
+# CDO gridfile for section: fram_strait (4.0km resolution)
 
 gridtype = curvilinear
 gridsize = 144

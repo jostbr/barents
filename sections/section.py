@@ -11,11 +11,11 @@ class Section(object):
     gridfile based on the objects attributes.
 
     Example usage:
-    > s = Section("bso", 77., 20., 70., 20.)
+    > s = Section("bso", 77., 20., 70., 20., 10000.0)
     > s.write_gridfile("tmp.grd")
     """
 
-    def __init__(self, name, lat0, lon0, lat1, lon1, interval=10000.0):
+    def __init__(self, name, lat0, lon0, lat1, lon1, interval):
         """Constructor setting edge points and interval for section."""
         self.name = name
         self.lat0 = lat0
@@ -40,7 +40,7 @@ class Section(object):
         lons = " ".join([str(l[1]) for l in self.coors])
 
         with open(filename, "w") as f:
-            f.write("# CDO gridfile for section: {}\n\n".format(self.name))
+            f.write("# CDO gridfile for section: {} ({}km resolution)\n\n".format(self.name, self.interval/1000.0))
             f.write("gridtype = curvilinear\n")
             f.write("gridsize = {}\n".format(num_points))
             f.write("xsize = {}\n".format(num_points))
@@ -54,6 +54,5 @@ class Section(object):
             f.write("\n")
 
 if __name__ == "__main__":
-    # example usage
-    s = Section("bso", 77., 20., 70., 20.)
+    s = Section("bso", 77., 20., 70., 20., 10000.0)
     s.write_gridfile("tmp.grd")
