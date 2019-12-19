@@ -35,14 +35,15 @@ class Section(object):
     def write_gridfile(self, filename):
         """Function that writes a gridfile for cdo specfying a section,
         i.e. giving lat,lon coordinates along the section."""
+        num_points = len(self.coors)
         lats = " ".join([str(l[0]) for l in self.coors])
         lons = " ".join([str(l[1]) for l in self.coors])
 
         with open(filename, "w") as f:
             f.write("# CDO gridfile for section: {}\n\n".format(self.name))
             f.write("gridtype = curvilinear\n")
-            f.write("gridsize = {}\n".format(len(lats)))
-            f.write("xsize = {}\n".format(len(lats)))
+            f.write("gridsize = {}\n".format(num_points))
+            f.write("xsize = {}\n".format(num_points))
             f.write("ysize = 1\n")
             f.write("\n")
             f.write("# Longitudes\nxvals = ")
