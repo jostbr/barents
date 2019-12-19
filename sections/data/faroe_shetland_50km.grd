@@ -1,8 +1,8 @@
 # CDO gridfile for section: faroe_shetland
 
 gridtype = curvilinear
-gridsize = 93
-xsize = 93
+gridsize = 8
+xsize = 8
 ysize = 1
 
 # Longitudes

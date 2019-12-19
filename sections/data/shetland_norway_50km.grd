@@ -1,8 +1,8 @@
 # CDO gridfile for section: shetland_norway
 
 gridtype = curvilinear
-gridsize = 135
-xsize = 135
+gridsize = 11
+xsize = 11
 ysize = 1
 
 # Longitudes

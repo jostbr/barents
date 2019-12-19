@@ -1,8 +1,8 @@
 # CDO gridfile for section: iceland_faroe
 
 gridtype = curvilinear
-gridsize = 1051
-xsize = 1051
+gridsize = 77
+xsize = 77
 ysize = 1
 
 # Longitudes

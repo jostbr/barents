@@ -5,7 +5,7 @@
 import read_sections
 
 sections_file = "sections.csv"
-intervals = [10000.0, 50000.0]
+intervals = [4000.0, 10000.0, 50000.0]
 
 # loop over resolutions, read in sections and write cdo gridfiles
 for dx in intervals:

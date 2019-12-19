@@ -1,8 +1,8 @@
 # CDO gridfile for section: svalbard_fjl
 
 gridtype = curvilinear
-gridsize = 247
-xsize = 247
+gridsize = 19
+xsize = 19
 ysize = 1
 
 # Longitudes

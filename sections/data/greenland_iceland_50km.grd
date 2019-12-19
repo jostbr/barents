@@ -1,8 +1,8 @@
 # CDO gridfile for section: greenland_iceland
 
 gridtype = curvilinear
-gridsize = 204
-xsize = 204
+gridsize = 16
+xsize = 16
 ysize = 1
 
 # Longitudes

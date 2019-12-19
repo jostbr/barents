@@ -1,8 +1,8 @@
 # CDO gridfile for section: fjl_novaya_zemlya
 
 gridtype = curvilinear
-gridsize = 146
-xsize = 146
+gridsize = 12
+xsize = 12
 ysize = 1
 
 # Longitudes

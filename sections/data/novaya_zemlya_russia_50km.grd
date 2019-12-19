@@ -1,8 +1,8 @@
 # CDO gridfile for section: novaya_zemlya_russia
 
 gridtype = curvilinear
-gridsize = 149
-xsize = 149
+gridsize = 12
+xsize = 12
 ysize = 1
 
 # Longitudes

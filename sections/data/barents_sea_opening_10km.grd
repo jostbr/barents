@@ -1,8 +1,8 @@
 # CDO gridfile for section: barents_sea_opening
 
 gridtype = curvilinear
-gridsize = 1242
-xsize = 1242
+gridsize = 91
+xsize = 91
 ysize = 1
 
 # Longitudes
