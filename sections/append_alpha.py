@@ -1,7 +1,7 @@
 import scipy as sp
 import numpy as np
 import scipy.ndimage as nd
-import netCDF4 
+import netCDF4
 import sys
 
 import matplotlib.pyplot as plt
@@ -27,8 +27,12 @@ lats = ds.variables["latitude"][:,:]
 
 alpha = north_direction(lats)
 
+# add attributes and fill angle data
+a.standard_name = "angle_between_topaz_y_and_true_north"
+a.units = "degrees"
+a.coordinates = "latitude longitude"
+a._FillValue = -32767
+a.missing_value = -32767
 a[:] = alpha
 
 ds.close()
-
-
