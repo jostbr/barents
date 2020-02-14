@@ -17,7 +17,7 @@ def valid_path(path):
 parser = argparse.ArgumentParser(description="Interpolate model data to lon/lat section")
 parser.add_argument("section_file", type=valid_path, help="filename of cdo gridfile defining the section")
 parser.add_argument("model_file", type=valid_path, help="filename of model data file")
-parser.add_argument("output_file", type=valid_path, help="filename of generated output file")
+parser.add_argument("output_file", type=str, help="filename of generated output file")
 args = parser.parse_args()
 
 # call CDO command to tinterpolate model data to section
