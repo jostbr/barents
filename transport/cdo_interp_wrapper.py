@@ -7,19 +7,11 @@ import argparse
 import subprocess
 
 def valid_path(path):
-    """
-    Function that validates if path exists.
-
-    Args:
-        path (str) : Suggested file path
-    Returns:
-        path (str) : If path exists
-    """
+    """Function that validates if path exists."""
     if os.path.exists(path):
         return path
     else:
         raise argparse.ArgumentTypeError("Invalid path {}!".format(path))
-
 
 # handle command line arguments
 parser = argparse.ArgumentParser(description="Interpolate model data to lon/lat section")
@@ -30,4 +22,4 @@ args = parser.parse_args()
 
 # call CDO command to tinterpolate model data to section
 subprocess.call("module load cdo", shell=True)
-subprocess.call("cdo remapbil,{} {} {}".format(args.section_file, srgs.model_file, args.ouptut_file), shell=True)
+subprocess.call("cdo remapbil,{} {} {}".format(args.section_file, args.model_file, args.output_file), shell=True)
