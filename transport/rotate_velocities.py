@@ -1,11 +1,12 @@
 import scipy as sp
+import numpy as np
 import scipy.ndimage as nd
 from netCDF4 import Dataset
 import sys
 #from get_latlon import *
 
 sectionfilename = sys.argv[1]
-#gridfilename = sys.argv[2]
+#alphafilename = sys.argv[2]
 
 
 def rotate_vectorfield(U,V,alpha):
@@ -17,12 +18,13 @@ def rotate_vectorfield(U,V,alpha):
     R = sp.array([[sp.cos(alpha), -sp.sin(alpha)], [sp.sin(alpha), sp.cos(alpha)] ])
     shpe = U.shape
     origwind = sp.array((U.flatten(), V.flatten()))
-    if len(R.shape)==2:
-        rotwind = dot(R, origwind) # for constant rotation angle
-    else:
-        # for rotation angle given as array with same dimensions as U and V:
-        # k-loop with rotwind(k) = dot(R(i,j,k), origwind(j,k)) (einstein summation indices)
-        rotwind = sp.einsum("ijk,ik -> jk", R, origwind)  # einstein summation indices
+    #if len(R.shape)==2:
+    #    rotwind = np.dot(R, origwind) # for constant rotation angle
+    #else:
+    # for rotation angle given as array with same dimensions as U and V:
+    # k-loop with rotwind(k) = dot(R(i,j,k), origwind(j,k)) (einstein summation indices)
+    rotwind = sp.einsum("ijk,ik -> jk", R, origwind)  # einstein summation indices
+
     Urot ,Vrot = rotwind[0,:], rotwind[1,:]
     Urot = Urot.reshape(shpe)
     Vrot = Vrot.reshape(shpe)
@@ -40,7 +42,7 @@ def north_direction(lat):
 sf = Dataset(sectionfilename)
 u = sf.variables['u'][:]
 v = sf.variables['v'][:]
-sec_lat = sf.variables['lat'][:]
+alpha = sf.variables['alpha'][:]
 
 #lat_grid, lon_grid = get_latlon_from_topaz()
 
