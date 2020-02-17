@@ -5,6 +5,10 @@
 import os
 import argparse
 import subprocess
+from netCDF4 import Dataset, num2date
+import scipy as sp
+import numpy as np
+import matplotlib.pyplot as plt
 
 # constants
 density = 1025 # kg/m3
@@ -21,13 +25,36 @@ def valid_path(path):
 parser = argparse.ArgumentParser(description="Interpolate model data to lon/lat section")
 parser.add_argument("data_file", type=valid_path, help="filename of section data file containing velocities, temperature, and salinity")
 parser.add_argument("section_file", type=valid_path, help="filename of section gridfile containing section cell areas")
-parser.add_argument("output_file", type=str, help="filename of generated output file")
 args = parser.parse_args()
 
 # check variable name of temperature 
 
 # call CDO command to tinterpolate model data to section
-subprocess.call("module load cdo", shell=True)
-subprocess.call("ncks -a -v cell_area {} {}".format(args.section_file, args.data_file), shell=True)
-subprocess.call("cdo expr,´volume_flux=cell_area*v_secs;heat_flux=volume_flux*temperature*{}*{}´ {} {}".format(specific_heat_capacity, density, args.data_file, args.output_file), shell=True)
-#subprocess.call("nco 
+
+section_grid = Dataset(args.section_file,'r')
+data_file = Dataset(args.data_file,'r')
+
+time_nc = data_file.variables['time']
+time = num2date(time_nc[:], time_nc.units)
+cell_area = section_grid.variables['cell_area']
+v = data_file_variables['v_sec']
+temp = data_file.variables['temperature']
+
+
+heat_flux = cell_area * np.sum(v, axis=(1,2)) * np.sum(temp, axis(1,2)) * density * specific_heat_capacity
+
+
+# Calculate running 5-year mean
+dt = time[1]-time[0]
+N = 5*365*24*3600 / dt.total_seconds()
+kernel = sp.ones(N)/N
+heat_flux_5y = sp.convolve(heat_flux, kernel, mode='constant')
+
+
+# plot 
+fig = plt.figure(figsize=[12,8])
+plt.plot(time, heat_flux_5y, lw=2, label='5 avg')
+plt.plot(time, heat_flux, lw=1, label='instantanous')
+plt.savefig('heatflux.png')
+
+
