@@ -1,0 +1,12 @@
+name,lat0,lon0,lat1,lon1
+barents_sea_opening_1,68,20,76,18
+barents_sea_opening_2,76,18,79.4,14
+svalbard_fjl,79.4,14,80.5,60
+fjl_novaya_zemlya,80.5,60,76,60
+novaya_zemlya_russia,71,55,68,65
+greenland_iceland,68,-35,65,-20
+iceland_faroe,65,-20,62,-6.3
+faroe_shetland,62,-6.3,60.5,-1.2
+shetland_norway,60.5,-1.2,60,7
+fram_strait,81,-15,79.4,14
+mid_barents,76,18,76,60
