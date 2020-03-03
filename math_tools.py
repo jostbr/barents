@@ -127,8 +127,6 @@ def interp_midpoint(x, axis=()):
     for a in axis:
         slice_left = tuple(slice(None) if i != a else slice(0, x.shape[i]-1) for i in range(len(x.shape)))
         slice_right = tuple(slice(None) if i != a else slice(1, None) for i in range(len(x.shape)))
-        print(slice_left)
-        print(slice_right)
         x = (x[slice_left] + x[slice_right])/2.0
 
     return x

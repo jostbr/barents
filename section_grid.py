@@ -11,7 +11,7 @@ class SectionGrid(section.Section):
     def __init__(self, name, lat0, lon0, lat1, lon1, dx):
         super(SectionGrid, self).__init__(name, lat0, lon0, lat1, lon1, dx)
 
-    def generate_gridfile(self, var_list, from_file, to_file):
+    def ncks_variable_extract(self, var_list, from_file, to_file):
         """
         Method that writes a new file with a subset of variables from an existing
         file using 'ncks' to extract the desired variables.
@@ -99,16 +99,19 @@ class SectionGrid(section.Section):
         ds.sync()
         ds.close()
 
-    def write_area(self, filename, dz, area_name):
+    def write_area(self, filename, depth_name, model_depth_name, area_name):
         """
         Method that writes the area of each cell in the section to the specified file
 
         Args:
             skmkdfm
         """
-        area = dz*self.dx
-
+        # read depth levels and model depth from section grid file
         ds = netCDF4.Dataset(filename, mode="r+")
+        depth = ds.variables[depth_name][:].copy()
+        model_depth = ds.variables[model_depth_name][:].copy()
+        area = math_tools.compute_dz(depth, model_depth)*self.dx
+
         var = ds.createVariable(area_name, "f8", ("depth", "x"))
         var.units = "square meter"
         var.standard_name = "cell_area"
