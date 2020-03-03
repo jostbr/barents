@@ -59,7 +59,7 @@ def get_coordinates(interval,azimuth,lat1,lng1,lat2,lng2):
     coords = []
     coords.append([lat1,lng1])
 
-    for distance in xrange(0,int(dist)):
+    for distance in range(0,int(dist)):
         coord = get_destination_latlon(lat1,lng1,azimuth,counter)
         counter = counter + float(interval)
         coords.append(coord)
@@ -107,3 +107,57 @@ def rotate_vectorfield(U, V, alpha):
     Urot = Urot.reshape(shpe)
     Vrot = Vrot.reshape(shpe)
     return Urot, Vrot
+
+def interp_midpoint(x, axis=()):
+    """
+    Function that interpolates an array along a given set of axes to midpoint
+    values between existing data, i.e. takes the mean of two adjacent values to
+    get the midpoint. The interpolated array has one less element along the interp
+    axes.
+
+    Args:
+        x (ndarray)  : Array to be interpolated
+        axis (tuple) : Tuple of which axes to interpolate along (subsequently)
+    Returns:
+        x_interp (ndarray) : Interpolated array
+    """
+    if type(axis) is int:
+        axis = tuple(axis)
+
+    for a in axis:
+        slice_left = tuple(slice(None) if i != a else slice(0, x.shape[i]-1) for i in range(len(x.shape)))
+        slice_right = tuple(slice(None) if i != a else slice(1, None) for i in range(len(x.shape)))
+        print(slice_left)
+        print(slice_right)
+        x = (x[slice_left] + x[slice_right])/2.0
+
+    return x
+
+def compute_dz(depth, model_depth):
+    """
+    Function that computes the height of each cell given the vertical
+    depths and the bottom topography
+
+    Args:
+        depth (ndarray) : Either 1d or 2d array of vertical levels in the section
+        model_depth (ndarray) : 1d array of model topography at each point along section
+    Returns:
+        dz (ndarray) : 2d array of shape (depth.shape[0], model_depth.shape[0])
+    """
+    if len(depth.shape) == 1:
+        depth = np.column_stack([depth for _ in range(len(model_depth))])
+
+    dz = np.zeros(depth.shape)
+    dz[0] = ((depth[1] - depth[0])/2.0 + depth[0])*np.where(model_depth.mask, float("nan"), 1.0)
+
+    for i in range(len(model_depth)):
+        for j in range(1, depth.shape[0]):
+            if not type(model_depth[i]) is np.ma.core.MaskedConstant and depth[j,i] < model_depth[i]:
+                if j == depth.shape[0] - 1 or depth[j+1,i] > model_depth[i]:
+                    dz[j,i] = model_depth[i] - depth[j,i] + (depth[j,i] - depth[j-1,i])/2.0  # bottom cell
+                else:
+                    dz[j,i] = (depth[j+1,i] - depth[j-1,i])/2.0  # general cell
+            else:
+                dz[j,i] = float("nan")
+
+    return dz
