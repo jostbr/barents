@@ -24,6 +24,18 @@ class SectionGrid(section.Section):
         var_names = ",".join(v for v in var_list)
         subprocess.call("ncks -O -v {} {} {}".format(var_names, from_file, to_file), shell=True)
 
+    def ncks_copy_variable(self, var_name, from_file, to_file):
+        """
+        Method that copies a variable from one netcdf file and appends it
+        to another file using ncks.
+
+        Args:
+            from_file (str) : Filename of file containing variable
+            to_file (str)   : Filename of file to append variable to
+            var_name (str)  : Name of variable to copy
+        """
+        subprocess.call("ncks -A -v {} {} {}".format(var_name, from_file, to_file), shell=True)
+
     def write_xymesh(self, filename, x_name, y_name, xx_name, yy_name):
         """
         Method that computes a mesgrid from existing 1D projection coordinate variables
@@ -59,18 +71,6 @@ class SectionGrid(section.Section):
         ds.sync()
         ds.close()
 
-    def copy_variable(self, var_name, from_file, to_file):
-        """
-        Method that copies a variable from one netcdf file and appends it
-        to another file using ncks.
-
-        Args:
-            from_file (str) : Filename of file containing variable
-            to_file (str)   : Filename of file to append variable to
-            var_name (str)  : Name of variable to copy
-        """
-        subprocess.call("ncks -A -v {} {} {}".format(var_name, from_file, to_file), shell=True)
-
     def write_angle(self, filename, xx_name, yy_name, angle_name):
         """
         Method that computes the angle between model grid and section based on existing
@@ -101,12 +101,14 @@ class SectionGrid(section.Section):
 
     def write_area(self, filename, depth_name, model_depth_name, area_name):
         """
-        Method that writes the area of each cell in the section to the specified file
+        Method that based on the depth layers and model depth in the section,
+        computes and writes the area of each cell in the section to the specified file
 
         Args:
-            skmkdfm
+            filename (str) : Filename of section grid file
+            depth_name (str) : Name of depth variable
+            model_depth_name (str) : Name of model depth (topography) variable
         """
-        # read depth levels and model depth from section grid file
         ds = netCDF4.Dataset(filename, mode="r+")
         depth = ds.variables[depth_name][:].copy()
         model_depth = ds.variables[model_depth_name][:].copy()

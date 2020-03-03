@@ -11,7 +11,7 @@ class SectionTransport(section_grid.SectionGrid):
     def __init__(self, name, lat0, lon0, lat1, lon1, dx):
         super(SectionTransport, self).__init__(name, lat0, lon0, lat1, lon1, dx)
 
-    def write_section_referenced_velocities(self, section_model_file, section_grid_file):
+    def write_section_referenced_velocities(self, section_grid_file, section_model_file):
         """
         Rotate u,v velocities in a section data file from model grid to section grid
         and append rotated velocities to section data file. new u velocities are along
@@ -21,14 +21,14 @@ class SectionTransport(section_grid.SectionGrid):
             section_grid_file (str)  : Filename of section-interpoalted grid file
             section_model_file (str) : Filename of section-interpoalted model data file
         """
-        sdf = Dataset(section_model_file, "r+")
+        sdf = netCDF4.Dataset(section_model_file, "r+")
         u = sdf.variables["u"]
         v = sdf.variables["v"]
 
-        smg = Dataset(section_grid_file, "r")
+        smg = netCDF4.Dataset(section_grid_file, "r")
         # alpha is the angel from section x direction to model x direction,
         # section x is defined as along-section and section y is perpendicular to the section
-        alpha = smg.variables["alpha"]
+        alpha = smg.variables["angle"]
 
         u_sec, v_sec = math_tools.rotate_vectorfield(u[:], v[:], -alpha[:]) # rotate from model x to section x
 

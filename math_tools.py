@@ -3,6 +3,7 @@
 
 import math
 import numpy as np
+import scipy as sp
 
 def get_path_length(lat1,lng1,lat2,lng2):
     """calculates the distance between two lat, long coordinate pairs"""
