@@ -125,7 +125,7 @@ def generate_gridfiles(sections_def_file, resolutions, output_dir):
         output_dir (str)        : Directory to store CDO output grid files
     """
     output_template = os.path.join(output_dir, "{}_{}km.grd")
-    
+
     for dx in resolutions:
         sections = read_sections(sections_def_file, dx)
 

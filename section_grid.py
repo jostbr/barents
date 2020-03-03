@@ -59,6 +59,18 @@ class SectionGrid(section.Section):
         ds.sync()
         ds.close()
 
+    def copy_variable(self, var_name, from_file, to_file):
+        """
+        Method that copies a variable from one netcdf file and appends it
+        to another file using ncks.
+
+        Args:
+            from_file (str) : Filename of file containing variable
+            to_file (str)   : Filename of file to append variable to
+            var_name (str)  : Name of variable to copy
+        """
+        subprocess.call("ncks -A -v {} {} {}".format(var_name, from_file, to_file), shell=True)
+
     def write_angle(self, filename, xx_name, yy_name, angle_name):
         """
         Method that computes the angle between model grid and section based on existing
@@ -87,5 +99,23 @@ class SectionGrid(section.Section):
         ds.sync()
         ds.close()
 
-    def compute_area(self, filename, z_name, depth_name):
-        raise NotImplementedError
+    def write_area(self, filename, dz, area_name):
+        """
+        Method that writes the area of each cell in the section to the specified file
+
+        Args:
+            skmkdfm
+        """
+        area = dz*self.dx
+
+        ds = netCDF4.Dataset(filename, mode="r+")
+        var = ds.createVariable(area_name, "f8", ("depth", "x"))
+        var.units = "square meter"
+        var.standard_name = "cell_area"
+        var.long_name = "area_of_each_cell_in_section"
+        var.grid_mapping = "stereographic"
+        var.coordinates = "longitude latitude"
+        var[:] = area
+
+        ds.sync()
+        ds.close()
