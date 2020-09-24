@@ -29,18 +29,22 @@ class SectionTransport(section_grid.SectionGrid):
         # alpha is the angel from section x direction to model x direction,
         # section x is defined as along-section and section y is perpendicular to the section
         alpha = smg.variables["angle"]
+        alpha = np.column_stack([alpha for _ in range(12)]).T
+        print(u.shape, v.shape, alpha.shape)
 
-        u_sec, v_sec = math_tools.rotate_vectorfield(u[:], v[:], -alpha[:]) # rotate from model x to section x
+        u_sec, v_sec = math_tools.rotate_vectorfield(u[0,:,:], v[0,:,:], -alpha[:]) # rotate from model x to section x
 
         u_sec_nc = sdf.createVariable("u_sec", u.datatype, u.dimensions)
         u_sec_nc.setncatts({k: u.getncattr(k) for k in u.ncattrs()})
         u_sec_nc.setncatts({"long_name" : "along_section_velocity"})
         u_sec_nc.setncatts({"standard_name" : "along_section_velocity"})
+        sdf.variables["u_sec"][0,:,:] = u_sec
 
         v_sec_nc = sdf.createVariable("v_sec", v.datatype, v.dimensions)
         v_sec_nc.setncatts({k: v.getncattr(k) for k in v.ncattrs()})
         v_sec_nc.setncatts({"long_name" : "cross_section_velocity"})
         v_sec_nc.setncatts({"standard_name" : "cross_section_velocity"})
+        sdf.variables["v_sec"][0,:,:] = v_sec
 
         sdf.close()
         smg.close()
