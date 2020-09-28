@@ -31,6 +31,7 @@ class Section(object):
         self.lon1 = lon1
         self.dx = dx
         self.coors = self.compute_section()
+        self.cdo_file = None
 
     def compute_section(self):
         """Function that computes lat,lon coordinates between edge
@@ -61,7 +62,9 @@ class Section(object):
             f.write("# Longitudes\nxvals = {}\n\n".format(lons))
             f.write("# Latitudes\nyvals = {}\n".format(lats))
 
-    def interpolate(self, cdo_file, input_file, output_file):
+        self.cdo_file = filename
+
+    def interpolate(self, input_file, output_file):
         """
         Method that uses 'cdo remapbil' to inteprolate the input file to the
         section specified by the CDO gridfile and writes the result to the output file.
@@ -71,9 +74,17 @@ class Section(object):
             input_file (str)  : Filename of some model data to interpolate to the section
             output_file (str) : Filename for section-interpolated data
         """
-        subprocess.call("module load cdo", shell=True)
-        subprocess.call("cdo remapbil,{} {} {}".format(cdo_file, input_file, output_file), shell=True)
-        subprocess.call("ncwa -O -a y {} {}".format(output_file, output_file), shell=True)  # delete singleton dim "y"
+        if self.cdo_file is None:
+            raise RuntimeError("Must have called self.write_section before inteprolating!")
+
+        cdo_command = "cdo remapbil,{} {} {}".format(self.cdo_file, input_file, output_file)
+        ncwa_command = "ncwa -O -a y {} {}".format(output_file, output_file)
+
+        subprocess.call("module load cdo", shell=True)  # in case system requiers module loading
+        print(cdo_command)
+        subprocess.call(cdo_command, shell=True)
+        print(ncwa_command)
+        subprocess.call(ncwa_command, shell=True)  # delete singleton dim "y"
 
     def plot(self):
         """Method to plot section on a map."""
@@ -116,7 +127,8 @@ def read_csv(filename, dx):
     return sections
 
 def generate_gridfiles(sections_def_file, resolutions, output_dir):
-    """Script that reads in Sections objects from sections.csv and generates
+    """
+    Script that reads in Sections objects from sections.csv and generates
     CDO gridfiles for each Section object for each resolution.
 
     Args:

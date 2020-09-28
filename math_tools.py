@@ -4,6 +4,7 @@
 import math
 import numpy as np
 import scipy as sp
+from scipy import ndimage as nd
 
 def get_path_length(lat1,lng1,lat2,lng2):
     """calculates the distance between two lat, long coordinate pairs"""
@@ -86,6 +87,14 @@ def angle_from_dydx(x, y, unit="radians"):
         return angle*360.0/(2*np.pi)
     else:
         raise ValueError("Invalid choice {} for angle unit!".format(unit))
+
+def compute_angle_relative_to_north(lat):
+    """Function that computes angle between north and model y direction."""
+    raise NotImplementedError("this funtion seems incomplete, needs more dev and testing")
+    dlatdx = nd.filters.sobel(lat,axis=1,mode='constant',cval=sp.nan)  # gradient in x-direction
+    dlatdy = nd.filters.sobel(lat,axis=0,mode='constant',cval=sp.nan)
+    ydir = lat[-1,0] -lat[0,0]  # check if latitude is ascending or descending in y axis (same step might have to be done with x direction)
+    return sp.arctan2(dlatdx,dlatdy*sp.sign(ydir) )*180/sp.pi
 
 def rotate_vectorfield(U, V, alpha):
     """Rotate wind vectors clockwise. alpha may be a scalar or an array
