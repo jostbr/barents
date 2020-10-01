@@ -20,8 +20,8 @@ class GridFile(object):
 
     def write_angle(self, angle_name):
         """
-        Function that commpute and write angel between north direction relative
-        to image positive y coordinate.
+        Function that commpute and write angle between north direction relative
+        to grid positive y coordinate.
 
         Args:
             angle_name (str) : Name of angle variable to be written to grid file
@@ -32,9 +32,9 @@ class GridFile(object):
             except KeyError:
                 raise ValueError("Grid file {} must contain latitude variable!".format(self.grid_file))
 
-            angle = math_tools.compute_angle_relative_to_north(latitude)
+            angle = math_tools.compute_angle_relative_to_north(latitude[:,:])
 
-            var = grid.createVariable(angle_name, "f8", ("x", "y"))
+            var = grid.createVariable(angle_name, "f8", ("y", "x"))
             var.units = "degrees"
             var.standard_name = "angle"
             var.long_name = "angle_between_north_and_model_ydir"
